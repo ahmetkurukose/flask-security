@@ -17,6 +17,8 @@ user_registered = signals.signal("user-registered")
 
 user_confirmed = signals.signal("user-confirmed")
 
+user_two_factored = signals.signal("user-two-factored")
+
 confirm_instructions_sent = signals.signal("confirm-instructions-sent")
 
 login_instructions_sent = signals.signal("login-instructions-sent")
@@ -27,3 +29,4 @@ password_changed = signals.signal("password-changed")
 
 reset_password_instructions_sent = signals.signal(
     "password-reset-instructions-sent")
+two_factor_method_changed = signals.signal("two-factor-method-changed")
