@@ -102,7 +102,7 @@ def generate_qrcode():
     name = email.split('@')[0]
     totp = session['totp_secret']
     url = pyqrcode.create(get_totp_uri(name, totp))
-    from StringIO import StringIO
+    from io import StringIO
     stream = StringIO()
     url.svg(stream, scale=3)
     return stream.getvalue().encode('utf-8'), 200, {
