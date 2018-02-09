@@ -13,7 +13,7 @@
 import inspect
 import os
 
-from flask import Markup, current_app, flash, request
+from flask import Markup, current_app, flash, request, session
 from flask_login import current_user
 from flask_wtf import FlaskForm as BaseForm
 from speaklater import make_lazy_gettext
@@ -41,9 +41,9 @@ _default_field_labels = {
     'new_password': _('New Password'),
     'change_password': _('Change Password'),
     'send_login_link': _('Send Login Link'),
-    'phone': 'Phone Number',
-    'change_method': 'Change Method',
-    'verify_password': 'Verify Method'
+    'phone': _('Phone Number'),
+    'change_method': _('Change Method'),
+    'verify_password': _('Verify Method')
 }
 
 

@@ -16,8 +16,8 @@ from datetime import datetime
 import pkg_resources
 from flask import current_app, render_template
 from flask_babelex import Domain
-from flask_login import UserMixin as BaseUserMixin
 from flask_login import AnonymousUserMixin, LoginManager, current_user
+from flask_login import UserMixin as BaseUserMixin
 from flask_principal import Identity, Principal, RoleNeed, UserNeed, \
     identity_loaded
 from itsdangerous import URLSafeTimedSerializer
@@ -25,18 +25,17 @@ from passlib.context import CryptContext
 from werkzeug.datastructures import ImmutableList
 from werkzeug.local import LocalProxy
 
-from .utils import config_value as cv
-from .utils import _, get_config, hash_data, localize_callback, string_types, \
-    url_for_security, verify_hash
-from .views import create_blueprint
 from .forms import LoginForm, ConfirmRegisterForm, RegisterForm, \
     ForgotPasswordForm, ChangePasswordForm, ResetPasswordForm, \
     SendConfirmationForm, PasswordlessLoginForm, TwoFactorVerifyCodeForm, \
     TwoFactorSetupForm, TwoFactorChangeMethodVerifyPasswordForm, TwoFactorRescueForm
+from .utils import _, get_config, hash_data, localize_callback, string_types, \
+    url_for_security, verify_hash
+from .utils import config_value as cv
+from .views import create_blueprint
 
 # Convenient references
 _security = LocalProxy(lambda: current_app.extensions['security'])
-
 
 #: Default Flask-Security configuration
 _default_config = {
@@ -213,29 +212,17 @@ _default_messages = {
     'PASSWORD_RESET': (
         _('You successfully reset your password and you have been logged in '
           'automatically.'), 'success'),
-    'PASSWORD_IS_THE_SAME': (
-        _('Your new password must be different than your previous password.'),
-        'error'),
-    'PASSWORD_CHANGE': (
-        _('You successfully changed your password.'), 'success'),
-    'LOGIN': (
-        _('Please log in to access this page.'), 'info'),
-    'REFRESH': (
-        _('Please reauthenticate to access this page.'), 'info'),
-    'TWO_FACTOR_INVALID_TOKEN': (
-        'Invalid Token', 'error'),
-    'TWO_FACTOR_LOGIN_SUCCESSFUL': (
-        'Your token has been confirmed', 'success'),
-    'TWO_FACTOR_CHANGE_METHOD_SUCCESSFUL': (
-        'You successfully changed your two factor method.', 'success'),
-    'TWO_FACTOR_PASSWORD_CONFIRMATION_DONE': (
-        'You successfully confirmed password', 'success'),
-    'TWO_FACTOR_PASSWORD_CONFIRMATION_NEEDED': (
-        'Password confirmation is needed in order to access page', 'error'),
-    'TWO_FACTOR_PERMISSION_DENIED': (
-        'You currently do not have permissions to access this page', 'error'),
-    'TWO_FACTOR_METHOD_NOT_AVAILABLE': (
-        'Marked method is not valid', 'error'),
+    'PASSWORD_IS_THE_SAME': (_('Your new password must be different than your previous password.'),'error'),
+    'PASSWORD_CHANGE': (_('You successfully changed your password.'), 'success'),
+    'LOGIN': (_('Please log in to access this page.'), 'info'),
+    'REFRESH': (_('Please reauthenticate to access this page.'), 'info'),
+    'TWO_FACTOR_INVALID_TOKEN': (_('Invalid Token'), 'error'),
+    'TWO_FACTOR_LOGIN_SUCCESSFUL': (_('Your token has been confirmed'), 'success'),
+    'TWO_FACTOR_CHANGE_METHOD_SUCCESSFUL': (_('You successfully changed your two factor method.'), 'success'),
+    'TWO_FACTOR_PASSWORD_CONFIRMATION_DONE': (_('You successfully confirmed password'), 'success'),
+    'TWO_FACTOR_PASSWORD_CONFIRMATION_NEEDED': (_('Password confirmation is needed in order to access page'), 'error'),
+    'TWO_FACTOR_PERMISSION_DENIED': (_('You currently do not have permissions to access this page'), 'error'),
+    'TWO_FACTOR_METHOD_NOT_AVAILABLE': (_('Marked method is not valid'), 'error'),
 }
 
 _default_forms = {
@@ -567,8 +554,8 @@ class Security(object):
                 app.cli.add_command(roles, state.cli_roles_name)
 
         # configuration mismatch check
-        if cv('TWO_FACTOR', app=app) is True and len(cv('TWO_FACTOR_ENABLED_METHODS', app=app))\
-                < 1:
+        if cv('TWO_FACTOR', app=app) is True and len(cv('TWO_FACTOR_ENABLED_METHODS', app=app)) \
+            < 1:
             raise ValueError()
 
         flag = False

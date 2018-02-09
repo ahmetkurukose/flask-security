@@ -10,7 +10,7 @@
 """
 
 from flask import Blueprint, after_this_request, current_app, jsonify, \
-    redirect, request
+    redirect, request, session, abort
 from flask_login import current_user
 from werkzeug.datastructures import MultiDict
 from werkzeug.local import LocalProxy
@@ -344,7 +344,7 @@ def two_factor_login():
     # if we already validated email&password, there is no need to do it again
     form_class = _security.login_form
 
-    if request.json:
+    if request.is_json:
         form = form_class(MultiDict(request.json))
     else:
         form = form_class()
@@ -366,7 +366,7 @@ def two_factor_login():
                                 totp_secret=user.totp_secret)
             return redirect(url_for('two_factor_token_validation'))
 
-    if request.json:
+    if request.is_json:
         form.user = current_user
         return _render_json(form)
 
@@ -393,7 +393,7 @@ def two_factor_setup_function():
         user = current_user
     form_class = _security.two_factor_setup_form
 
-    if request.json:
+    if request.is_json:
         form = form_class(MultiDict(request.json))
     else:
         form = form_class()
@@ -414,7 +414,7 @@ def two_factor_setup_function():
                                          chosen_method=session['primary_method'],
                                          **_ctx('two_factor_setup_function'))
 
-    if request.json:
+    if request.is_json:
         return _render_json(form, include_user=False)
 
     code_form = _security.two_factor_verify_code_form()
@@ -441,7 +441,7 @@ def two_factor_token_validation():
 
     form_class = _security.two_factor_verify_code_form
 
-    if request.json:
+    if request.is_json:
         form = form_class(MultiDict(request.json))
     else:
         form = form_class()
@@ -451,7 +451,7 @@ def two_factor_token_validation():
             after_this_request(_commit)
             return redirect(get_post_login_redirect())
 
-    if request.json:
+    if request.is_json:
         return _render_json(form, include_user=False)
 
     # if we were trying to validate a new method
@@ -487,7 +487,7 @@ def two_factor_rescue_function():
 
     form_class = _security.two_factor_rescue_form
 
-    if request.json:
+    if request.is_json:
         form = form_class(MultiDict(request.json))
     else:
         form = form_class()
@@ -505,7 +505,7 @@ def two_factor_rescue_function():
         else:
             return "", 404
 
-    if request.json:
+    if request.is_json:
         return _render_json(form, include_user=False)
 
     code_form = _security.two_factor_verify_code_form()
@@ -522,7 +522,7 @@ def two_factor_password_confirmation():
     """View function which handles a change two factor method request."""
     form_class = _security.two_factor_change_method_verify_password_form
 
-    if request.json:
+    if request.is_json:
         form = form_class(MultiDict(request.json))
     else:
         form = form_class()
@@ -532,7 +532,7 @@ def two_factor_password_confirmation():
         do_flash(get_message('TWO_FACTOR_PASSWORD_CONFIRMATION_DONE'))
         return redirect(url_for('two_factor_setup_function'))
 
-    if request.json:
+    if request.is_json:
         form.user = current_user
         return _render_json(form)
 
