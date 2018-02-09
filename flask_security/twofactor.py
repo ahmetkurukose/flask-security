@@ -105,7 +105,7 @@ def generate_qrcode():
     from io import BytesIO
     stream = BytesIO()
     url.svg(stream, scale=3)
-    return stream.getvalue().encode('utf-8'), 200, {
+    return stream.getvalue() , 200, {
         'Content-Type': 'image/svg+xml',
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
