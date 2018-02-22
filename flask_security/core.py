@@ -529,8 +529,7 @@ class Security(object):
                            passwordless_login_form=passwordless_login_form,
                            two_factor_verify_code_form=two_factor_verify_code_form,
                            two_factor_setup_form=two_factor_setup_form,
-                           two_factor_change_method_verify_password_form=
-                           two_factor_change_method_verify_password_form,
+                           two_factor_change_method_verify_password_form=two_factor_change_method_verify_password_form,
                            two_factor_rescue_form=two_factor_rescue_form,
                            anonymous_user=anonymous_user)
 
